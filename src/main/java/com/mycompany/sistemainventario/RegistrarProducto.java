@@ -1,0 +1,593 @@
+package com.mycompany.sistemainventario;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+/**
+ *
+ * @author Alexa
+ */
+public class RegistrarProducto extends javax.swing.JFrame {
+     private boolean esEdicion = false;
+    
+public void Datos(int id, String sku, String modelo, String talla,
+                  double precio, int existencias, int stockMinimo,
+                  String categoria, String proveedor) {
+    
+  
+
+    this.idProducto = id;
+    this.esEdicion = true;
+    txtSKU.setText(sku);
+    txtModelo.setText(modelo);
+    txtPrecio.setText(String.valueOf(precio));
+    spnExiste.setValue(existencias);
+    spnStock.setValue(stockMinimo);
+    cmbCategoria.setSelectedItem(categoria);
+    
+    
+    if (categoria.contains("accesorios")) {
+        cmbTalla.addItem("");
+        cmbTalla.setEnabled(false);
+    } else {
+       cmbTalla.setEnabled(true);
+    if (categoria.contains("calzado")) {
+        for (int i = 20; i <= 30; i++) {
+            cmbTalla.addItem(String.valueOf(i));
+        }
+    }
+    else if (categoria.contains("ropa")) {
+        String[] tallas = {"XXS", "XS", "S", "M", "L", "XL", "XXL"};
+        for (String t : tallas) {
+            cmbTalla.addItem(t);
+        }
+        for (int i = 2; i <= 44; i++) {
+            cmbTalla.addItem(String.valueOf(i));
+        }
+    }
+    else if (categoria.contains("pantalon") || categoria.contains("Pantalon")) {
+            for (int i = 2; i <= 44; i++) {
+                cmbTalla.addItem(String.valueOf(i));
+            }
+    }
+    else {
+    cmbTalla.setEnabled(true);
+
+    String[] tallas = {"XXS","XS","S","M","L","XL","XXL"};
+    for (String t : tallas) {
+        cmbTalla.addItem(t);
+    }
+}
+    cmbTalla.setSelectedItem(talla);
+    cmbProveedor.setSelectedItem(proveedor);
+    cmbTalla.repaint();
+  } 
+}
+        public int idProducto = 0;  
+    
+    public void registrarActividad(String modulo, String accion, String descripcion) {
+
+    String sql = "INSERT INTO actividad_reciente(Modulo, Accion, Descripcion, FechaHora) "
+               + "VALUES (?, ?, ?, NOW())";
+
+    Conexion cc = new Conexion();
+
+    try (Connection cn = cc.getConnection();
+         PreparedStatement ps = cn.prepareStatement(sql)) {
+
+        ps.setString(1, modulo);
+        ps.setString(2, accion);
+        ps.setString(3, descripcion);
+
+        ps.executeUpdate();
+
+    } catch (SQLException e) {
+        System.out.println("Error al registrar actividad: " + e.getMessage());
+    }
+}
+    private void configurarCategorias() {
+
+    cmbCategoria.addActionListener(new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (cmbCategoria.getSelectedItem() == null) {
+                return;
+            }
+            String categoria = cmbCategoria.getSelectedItem().toString().toLowerCase();
+            cmbTalla.removeAllItems();
+            if (categoria.contains("accesorios")) {
+                cmbTalla.setEnabled(false);
+                cmbTalla.addItem("");
+            }
+            else if (categoria.contains("calzado")) {
+                cmbTalla.setEnabled(true);
+                
+                for (int i = 20; i <= 30; i++) {
+                    cmbTalla.addItem(String.valueOf(i));
+                }
+            }
+            else if (categoria.contains("ropa")) {
+                cmbTalla.setEnabled(true);
+                
+                String[] tallas = {"XXS", "XS", "S", "M", "L", "XL", "XXL"};
+                for (String t : tallas) {
+                    cmbTalla.addItem(t);
+                }
+                for (int i = 2; i <= 44; i++) {
+                    cmbTalla.addItem(String.valueOf(i));
+                }
+            }
+            else if (categoria.contains("pantalon") || categoria.contains("pantalón")) {
+                cmbTalla.setEnabled(true);
+                for (int i = 2; i <= 44; i++) { 
+                    cmbTalla.addItem(String.valueOf(i));
+                }
+            }
+            else {
+                cmbTalla.setEnabled(true);
+            String[] tallas = {"XXS", "XS", "S", "M", "L", "XL", "XXL"};
+
+    for (String t : tallas) {
+        cmbTalla.addItem(t);
+    }
+}
+        }
+    });
+}
+    /**
+     * Creates new form RegistrarProducto
+     */
+    public RegistrarProducto() {
+        initComponents();
+        
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        cargarCategoria();
+        cargarProveedores();
+        configurarCategorias();
+        cmbTalla.setEnabled(false);
+
+        
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtSKU = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtModelo = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        cmbCategoria = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        cmbProveedor = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cmbTalla = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        spnExiste = new javax.swing.JSpinner();
+        spnStock = new javax.swing.JSpinner();
+        jLabel10 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        btnGuardar.setIcon(new javax.swing.ImageIcon("C:\\Users\\franc\\Downloads\\Iconos para proyecto\\guardar.png")); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnCancelar.setIcon(new javax.swing.ImageIcon("C:\\Users\\franc\\Downloads\\Iconos para proyecto\\cerrar.png")); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel7.setText("Información General");
+
+        jLabel1.setText("SKU:");
+
+        jLabel2.setText("Modelo:");
+
+        jLabel8.setText("Categoría:");
+
+        jLabel9.setText("Proveedor:");
+
+        jLabel3.setText("Talla:");
+
+        cmbTalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTallaActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Precio:");
+
+        jLabel5.setText("Existencias:");
+
+        jLabel6.setText("Stock Minimo:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(192, 192, 192)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSKU, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(cmbProveedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(spnExiste, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbTalla, javax.swing.GroupLayout.Alignment.LEADING, 0, 197, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtPrecio)
+                            .addComponent(spnStock))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSKU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnExiste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("Detalle de Producto");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel10)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel10)
+                .addGap(2, 2, 2)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbTallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTallaActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_cmbTallaActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+       Conexion cc = new Conexion();
+    try (Connection cn = cc.getConnection()) {
+        String sku = txtSKU.getText().trim();
+        String modelo = txtModelo.getText().trim();
+    if (sku.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el SKU");
+        return;
+    }
+
+    if (modelo.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el modelo");
+        return;
+    }
+
+    if (txtPrecio.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el precio");
+        return;
+    }
+        String talla = "";
+
+    if (cmbTalla.isEnabled() && cmbTalla.getSelectedItem() != null) {
+
+    talla = cmbTalla.getSelectedItem().toString();
+}
+        
+        double precio;
+
+    try {
+        precio = Double.parseDouble(txtPrecio.getText().trim());
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Ingrese un precio válido");
+        return;
+    }
+            int existencias = (int) spnExiste.getValue();
+
+            String categoria = cmbCategoria.getSelectedItem().toString();
+            String proveedor = cmbProveedor.getSelectedItem().toString();
+
+            if (categoria.equals("Seleccionar categoria")) {
+        JOptionPane.showMessageDialog(this, "Seleccione una categoría");
+        return;
+    }
+
+            if (proveedor.equals("Seleccionar proveedor")) {
+        JOptionPane.showMessageDialog(this, "Seleccione un proveedor");
+        return;
+    }
+            if (cmbTalla.isEnabled() && cmbTalla.getSelectedItem() != null && cmbTalla.getSelectedItem().toString().equals("Seleccionar talla")){
+        JOptionPane.showMessageDialog(this, "Seleccione una talla");
+        return;       
+            }
+
+        int idCategoria = 0;
+        int idProveedor = 0;
+        
+        String sqlCategoria = "SELECT Id_Categoria FROM categoria WHERE Nombre = ?";
+        PreparedStatement psCategoria = cn.prepareStatement(sqlCategoria);
+        psCategoria.setString(1, categoria);
+
+        ResultSet rsCategoria = psCategoria.executeQuery();
+
+        if (rsCategoria.next()) {
+             idCategoria = rsCategoria.getInt("Id_Categoria");
+}
+        String sqlProveedor = "SELECT Id_Proveedor FROM proveedor WHERE Nombre = ?";
+        PreparedStatement psProveedor = cn.prepareStatement(sqlProveedor);
+        psProveedor.setString(1, proveedor);
+
+        ResultSet rsProveedor = psProveedor.executeQuery();
+
+        if (rsProveedor.next()) {
+               idProveedor = rsProveedor.getInt("Id_Proveedor");
+}
+        if (esEdicion) {
+            String sql = "UPDATE producto SET SKU=?, Modelo=?, Talla=?, Precio_Referencia=?, Existencias=?, Stock_Minimo=?, Id_Categoria=?, Id_Proveedor=?, Activo=1 WHERE Id_Producto=?";
+
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setString(1, sku);
+            ps.setString(2, modelo);
+            ps.setString(3, talla);
+            ps.setDouble(4, precio);
+            ps.setInt(5, existencias);
+            ps.setInt(6, (int) spnStock.getValue());
+            ps.setInt(7, idCategoria);
+            ps.setInt(8, idProveedor);
+            ps.setInt(9, idProducto);
+
+            ps.executeUpdate();
+
+            registrarActividad("Producto", "Editar", "Se editó el producto: " + modelo);
+            
+            JOptionPane.showMessageDialog(this, "Producto actualizado correctamente");
+
+        } else {
+            String sql = "INSERT INTO producto (SKU, Modelo, Talla, Precio_Referencia, Existencias, Stock_Minimo, Id_Categoria, Id_Proveedor, Activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)";
+
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setString(1, sku);
+            ps.setString(2, modelo);
+            ps.setString(3, talla);
+            ps.setDouble(4, precio);
+            ps.setInt(5, existencias);
+            ps.setInt(6, (int) spnStock.getValue());
+            ps.setInt(7, idCategoria);
+            ps.setInt(8, idProveedor);
+
+            ps.executeUpdate();
+            
+            registrarActividad("Producto", "Registro", "Se registró un nuevo producto: " + modelo);
+
+            JOptionPane.showMessageDialog(this, "Producto registrado correctamente");
+        }
+
+        this.dispose();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+private void llenarRopa() {
+    String[] tallas = {"XS", "S", "M", "L", "XL"};
+    for (String t : tallas) {
+        cmbTalla.addItem(t);
+    }
+}
+
+private void llenarCalzado() {
+    for (int i = 20; i <= 30; i++) {
+        cmbTalla.addItem(String.valueOf(i));
+    }
+
+}
+
+public void cargarCategoria(){
+   cmbCategoria.removeAllItems();
+   cmbCategoria.addItem("Seleccionar categoria");
+   
+   String sql = "SELECT Nombre FROM categoria WHERE Activo = 1";
+   
+   Conexion cc = new Conexion();
+   
+   try(Connection cn = cc.getConnection(); 
+           PreparedStatement ps = cn.prepareStatement(sql);
+           ResultSet rs = ps.executeQuery()){
+       
+       while (rs.next()) {
+            cmbCategoria.addItem(rs.getString("Nombre"));
+        }
+   }catch (SQLException e) {
+       JOptionPane.showMessageDialog(this, "Error al cargar categorías: " + e.getMessage());
+   }
+}
+
+public void cargarProveedores(){
+   cmbProveedor.removeAllItems();
+   cmbProveedor.addItem("Seleccionar proveedor");
+   
+   String sql = "SELECT Nombre FROM proveedor WHERE Activo = 1";
+   
+   Conexion cc = new Conexion();
+   
+   try(Connection cn = cc.getConnection(); 
+           PreparedStatement ps = cn.prepareStatement(sql);
+           ResultSet rs = ps.executeQuery()){
+       
+       while (rs.next()) {
+            cmbProveedor.addItem(rs.getString("Nombre"));
+        }
+   }catch (SQLException e) {
+       JOptionPane.showMessageDialog(this, "Error al cargar proveedores: " + e.getMessage());
+   }
+}
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(RegistrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(RegistrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(RegistrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(RegistrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RegistrarProducto().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JComboBox<String> cmbProveedor;
+    private javax.swing.JComboBox<String> cmbTalla;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner spnExiste;
+    private javax.swing.JSpinner spnStock;
+    private javax.swing.JTextField txtModelo;
+    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtSKU;
+    // End of variables declaration//GEN-END:variables
+}
